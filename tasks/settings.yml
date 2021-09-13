@@ -1,0 +1,11 @@
+---
+
+- name: Set up HTTP port
+  lineinfile:
+    path: "{{ jenkins_config_file }}"
+    state: present
+    regex: ^HTTP_PORT=
+    line: "HTTP_PORT={{ jenkins_http_port }}"
+  notify: restart jenkins
+
+## Need to add pluggins task. 

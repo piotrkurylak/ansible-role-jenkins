@@ -1,0 +1,31 @@
+---
+
+## Jenkins requires Java in order to run, yet certain distributions don’t include this by default
+## and some Java versions are incompatible with Jenkins.
+## Java 8 and 11 are supported. 
+## There are multiple Java implementations which you can use. OpenJDK is the most popular one at the moment.
+
+- name: Ensure non-supported versions of Java are uninstalled.
+  apt:
+    name: "{{ item }}"
+    state: absent
+  ignore_errors: yes
+
+  loop: "{{ openjdk_nonsupported_versions }}"
+
+- name: Ensure proper version of Java is installed.
+  apt:
+    name: "{{ openjdk_supported_version }}"
+    state: present
+    update_cache: yes
+
+- name: Add Jenkins GPG key.
+  apt_key:
+    url: "{{ jenkins_repo_url }}/jenkins.io.key"
+    state: present
+
+- name: Add Jenkins repository.
+  apt_repository:
+    repo: "{{ jenkins_apt_repository }}"
+    state: present
+    update_cache: yes
