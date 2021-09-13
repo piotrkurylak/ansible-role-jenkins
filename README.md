@@ -1,38 +1,52 @@
-Role Name
-=========
+## Role Name: Jenkins
 
-A brief description of the role goes here.
+Ansible role which allows you to install Jenkins on Debian systems.
 
-Requirements
-------------
+## Requirements
 
-Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
+None.
 
-Role Variables
---------------
+## Role Variables
 
-A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
+````yaml
+Java versions for Jenkins, switch to 8 or newer than 11 if it is supported.
+````
+openjdk_supported_version: openjdk-11-jdk
 
-Dependencies
-------------
+openjdk_nonsupported_versions: [openjdk-7*, openjdk-9*, openjdk-10*, openjdk-12*, openjdk-13*, openjdk-14*, openjdk-15*, openjdk-16*]
 
-A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
+````yaml
+Switch to weekly release if you want - 'debian' instead of 'debian-stable'
+````
+jenkins_apt_release_channel: debian-stable
 
-Example Playbook
-----------------
+jenkins_repo_url: "https://pkg.jenkins.io/{{ jenkins_apt_release_channel }}"
 
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
+jenkins_apt_repository: "deb {{ jenkins_repo_url }} binary/"
 
-    - hosts: servers
+jenkins_config_file: "/etc/default/jenkins"
+````yaml
+Change depending on your needs. Default port used by Jenkins is 8080.
+````
+jenkins_http_port: 8080
+
+## Dependencies
+
+None.
+
+## Example Playbook
+
+````yaml
+    - hosts: all
+      become: yes
       roles:
-         - { role: username.rolename, x: 42 }
+         - jenkins
+````
 
-License
--------
+## License
 
-BSD
+MIT / BSD
 
-Author Information
-------------------
+## Author Information
 
-An optional section for the role authors to include contact information, or a website (HTML is not allowed).
+Role created by Piotr Kurylak.
