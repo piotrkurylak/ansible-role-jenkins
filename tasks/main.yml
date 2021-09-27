@@ -3,8 +3,6 @@
 - include_tasks: setup-Debian.yml
   when: ansible_os_family == "Debian"
 
-- include_tasks: settings.yml
-
 - name: Ensure Jenkins is installed.
   apt:
     name: jenkins
@@ -15,6 +13,8 @@
     name: jenkins
     state: started
     enabled: yes
+
+- include_tasks: settings.yml
 
 - name: Flush handlers.
   meta: flush_handlers
