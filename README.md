@@ -37,7 +37,7 @@ None.
     - hosts: all
       become: yes
       roles:
-         - jenkins
+         - ansible-role-jenkins
 ````
 
 ## License
